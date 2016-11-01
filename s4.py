@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Oct 26 14:09:17 2016
-
+This programs bins drifter velocity statistics.
+It assumes an input file "Flist.csv" and input data in the "data4" subdirectoy
 @author:xiaojian
 """
 # -*- coding: utf-8 -*-
 import numpy as np
-#from pydap.client import open_url
 import matplotlib.pyplot as plt
 from SeaHorseLib import *
 from datetime import *
-#from scipy import interpolate
 import sys
 from SeaHorseTide import *
 import shutil
@@ -19,6 +18,8 @@ import matplotlib.cm as cm
 
 #HARDCODES
 gridsize=0.1
+minlon=-70.75;maxlon=-70.0;minlat=41.63;maxlat=42.12 # geographic box of interest
+drift_or_model='model'
 
 def sh_bindata(x, y, z, xbins, ybins):
     """
@@ -74,9 +75,9 @@ for k in range(len(FNs)):
     udti=Z['udti'];vdti=Z['vdti'];
     '''
     tdh=Z['tdh'];londh=Z['londh'];latdh=Z['latdh'];
-    udh=Z['udh'];vdh=Z['vdh'];
+    udh=Z['udh'];vdh=Z['vdh']; #hourly drifter velocities
     tgap=Z['tgap'];flag=Z['flag'];
-    udm=Z['udm'];vdm=Z['vdm'];
+    udm=Z['udm'];vdm=Z['vdm']; #modeled velocites
     udti=Z['udti'];vdti=Z['vdti'];
     Z.close()
     
@@ -86,8 +87,12 @@ for k in range(len(FNs)):
     print 'th',th
     flagh=np.append(flagh,flag)
 #    ekem=((udm-umom)*(udm-umom)+(vdm-vmom)*(vdm-vmom))*0.5*flag
-    u1=udh*flag
-    v1=vdh*flag
+    if drift_or_model=='drift'
+      u1=udh*flag
+      v1=vdh*flag
+    elif drift_or_model=='model':
+      u1=udm*flag
+      v1=vdm*flag 
     u=np.append(u,u1)            
     v=np.append(v,v1)            
   
@@ -101,9 +106,9 @@ th=th[i]
 x=lonh
 y=lath
   
-xi = np.arange(-70.75,-70.00,gridsize)
-yi = np.arange(41.63,42.12,gridsize)
+xi = np.arange(minlon,maxlon,gridsize)
+yi = np.arange(minlat,maxlat,gridsize)
 
 xb,yb,ub_mean,ub_median,ub_std,ub_num = sh_bindata(x, y, u, xi, yi)
 xb,yb,vb_mean,vb_median,vb_std,vb_num = sh_bindata(x, y, v, xi, yi)
-np.savez('binned.npz',xb=xb,yb=yb,ub_mean=ub_mean,ub_median=ub_median,ub_std=ub_std,ub_num=ub_num,vb_mean=vb_mean,vb_median=vb_median,vb_std=vb_std,vb_num=vb_num)
+np.savez('binned_'+drift_or_model+'.npz',xb=xb,yb=yb,ub_mean=ub_mean,ub_median=ub_median,ub_std=ub_std,ub_num=ub_num,vb_mean=vb_mean,vb_median=vb_median,vb_std=vb_std,vb_num=vb_num)
