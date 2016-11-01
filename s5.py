@@ -20,6 +20,7 @@ import netCDF4
 ###################HARDCODE########################3
 scale1=1.
 scale2=4.
+drift_or_model='model' #drift or model
 def sh_bindata(x, y, z, xbins, ybins):
     """
     Bin irregularly spaced data on a rectangular grid.
@@ -110,7 +111,7 @@ nan nan
 CL=np.genfromtxt(FNCL,names=['lon','lat'])
 
 
-FN='binned.npz'
+FN='binned_'+drift_or_model+'.npz'
 #FN='binned_model.npz'
 Z=np.load(FN) 
 xb=Z['xb']
