@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Oct 26 14:22:58 2016
-
+Need to include a short comment here on what the program does
 @author: xiaojian
 """
 #http://www.ngdc.noaa.gov/mgg/coast/
@@ -10,12 +10,7 @@ Created on Wed Oct 26 14:22:58 2016
 import numpy as np
 #from pydap.client import open_url
 import matplotlib.pyplot as plt
-#from SeaHorseLib import *
-#from datetime import *
-#from scipy import interpolate
-#import sys
-#from SeaHorseTide import *
-#import shutil
+# deleted unnecessary commented out lines
 import matplotlib.mlab as mlab
 import matplotlib.cm as cm
 from mpl_toolkits.mplot3d import  Axes3D
@@ -68,6 +63,7 @@ def get_nc_data(url, *args):
     #print data
     return data
 """
+Need to clean this up.  Are these comments needed?
 from netCDF4 import Dataset
 
 # read in etopo5 topography/bathymetry.
@@ -100,6 +96,7 @@ FNCL='necscoast_worldvec.dat'
 # lon lat pairs
 # segments separated by nans
 """
+What are these numbers for?
 nan nan
 -77.953942	34.000067
 -77.953949	34.000000
@@ -129,7 +126,7 @@ vb_num=Z['vb_num']
 Z.close()
 for a in np.arange(len(ub_num)):
     for b in np.arange(len(ub_num[0])):
-        if ub_num[a][b]<10:
+        if ub_num[a][b]<10:# need to explain this and make "10" a hardcode
             ub_num[a][b]=0
             ub_mean[a][b]=np.nan
             vb_mean[a][b]=np.nan
